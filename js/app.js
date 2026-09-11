@@ -160,7 +160,7 @@
       <h2>Gợi ý lộ trình</h2>
       <div class="card small">
         <ol style="margin:0;padding-left:20px">
-          <li>Đọc phần <a href="#/notes">Tóm tắt</a> của từng chủ đề (đặc biệt là <b>CSDL</b> và <b>AWS</b> vì không có trong bài giảng).</li>
+          <li>Đọc phần <a href="#/notes">Tóm tắt</a> của từng chủ đề (đặc biệt là <b>AWS</b> vì không có trong bài giảng).</li>
           <li>Luyện theo chương, đọc kỹ giải thích ở mỗi câu sai.</li>
           <li>Mỗi 2–3 ngày làm một đề <a href="#/exam">thi thử</a> tổng hợp để quen áp lực thời gian.</li>
           <li>Trước ngày thi: vào <a href="#/wrong">Câu sai</a> để làm lại các câu còn yếu.</li>
