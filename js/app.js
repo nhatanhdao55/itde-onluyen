@@ -5,6 +5,46 @@
   const QB = window.QB || {};
   const NOTES = window.NOTES || {};
   const EXAM_DATE = new Date('2026-10-10T07:30:00+07:00');
+
+  // Phạm vi kiến thức Vòng 1 do Ban Tổ chức công bố
+  // (Thông báo "Nội dung thi Vòng 1 – Dev-Champion": bài thi Trắc nghiệm tổng hợp)
+  const SCOPE = {
+    cpp: ['Kiến thức nền tảng về ngôn ngữ lập trình, kiểu dữ liệu, biến, toán tử và biểu thức',
+      'Cấu trúc điều khiển, hàm, đệ quy và xử lý mảng/chuỗi',
+      'Lập trình hướng đối tượng (OOP)',
+      'Xử lý lỗi, debugging và các vấn đề thường gặp trong chương trình',
+      'Phân tích tính đúng đắn, hiệu năng và tối ưu code'],
+    dsa: ['Array, Linked List, Stack, Queue, Hash Table',
+      'Tree, Heap, Graph và các cấu trúc dữ liệu phổ biến',
+      'Các thuật toán tìm kiếm, sắp xếp và duyệt',
+      'BFS, DFS, đệ quy và Backtracking',
+      'Greedy và Dynamic Programming',
+      'Phân tích độ phức tạp thời gian và bộ nhớ (Big-O)'],
+    db: ['Cơ sở dữ liệu quan hệ và các khái niệm về Table, Key, Relationship',
+      'SQL và truy vấn dữ liệu',
+      'JOIN, GROUP BY, HAVING, Subquery và các hàm tổng hợp',
+      'Primary Key, Foreign Key và Index',
+      'Transaction, ACID và các vấn đề cơ bản về tính toàn vẹn dữ liệu',
+      'Kiến thức nền tảng về NoSQL và các trường hợp sử dụng'],
+    aws: ['Cloud Computing và các mô hình dịch vụ',
+      'AWS Region, Availability Zone và kiến trúc hạ tầng',
+      'Các dịch vụ phổ biến: EC2, S3, RDS, DynamoDB, Lambda, VPC, IAM, CloudWatch, ELB và Auto Scaling',
+      'Scalability, Elasticity, High Availability và Fault Tolerance',
+      'Kiến thức cơ bản về bảo mật, phân quyền và vận hành hệ thống trên AWS'],
+    net: ['Mô hình OSI và TCP/IP',
+      'IPv4/IPv6, IP Address, Subnet và Port',
+      'TCP, UDP và cơ chế TCP 3-way Handshake',
+      'HTTP/HTTPS, DNS, DHCP, SSH và các giao thức mạng phổ biến',
+      'Router, Switch, Firewall, NAT và Routing',
+      'Các khái niệm cơ bản về Network Security, IoT và an ninh mạng']
+  };
+  const SCOPE_FOCUS = {
+    cpp: 'Tư duy lập trình, đọc hiểu và phân tích code',
+    dsa: 'Lựa chọn cấu trúc dữ liệu và giải thuật phù hợp với bài toán',
+    db: 'Mô hình dữ liệu, truy vấn và tối ưu cơ sở dữ liệu',
+    aws: 'Nền tảng Cloud và chọn dịch vụ AWS cho bài toán thực tế',
+    net: 'Kiến thức nền tảng và phân tích hoạt động của hệ thống mạng'
+  };
   const KEYS = 'ABCDEFGH';
   const app = document.getElementById('app');
 
@@ -95,6 +135,7 @@
       case 'practice': return viewPractice(arg);
       case 'exam': return viewExam();
       case 'wrong': return viewWrong();
+      case 'scope': return viewScope();
       case 'notes': return viewNotes(arg);
       case 'quiz': return viewQuiz();
       case 'result': return viewResult();
@@ -139,7 +180,7 @@
             <dt>Thời gian</dt><dd><b>10/10/2026</b> (kết quả công bố 13/10/2026)</dd>
             <dt>Hình thức</dt><dd>Thi <b>trắc nghiệm</b>, trực tiếp tại phòng thực hành máy tính – HVNH</dd>
             <dt>Thí sinh</dt><dd>Mỗi đội cử <b>03 thành viên</b> dự thi</dd>
-            <dt>Nội dung</dt><dd>Lập trình · CTDL &amp; Giải thuật · Cơ sở dữ liệu · AWS Cloud · Mạng máy tính</dd>
+            <dt>Nội dung</dt><dd><b>Trắc nghiệm tổng hợp</b> 5 nhóm: Lập trình · CTDL &amp; Giải thuật · Cơ sở dữ liệu · AWS Cloud · Mạng máy tính (<a href="#/scope">xem phạm vi BTC công bố</a>)</dd>
             <dt>Kick-off</dt><dd>09h00 – 11h00, 26/09/2026, Tầng 7 Grand Terra, 36 Cát Linh</dd>
           </dl>
         </div>
@@ -157,15 +198,58 @@
       </div>
       <h2>Chủ đề ôn tập</h2>
       <div class="grid">${TOPICS.map(t => topicCard(t, '#/practice/' + t)).join('')}</div>
+      <div class="card small" style="margin-top:14px">
+        📋 Ngân hàng câu hỏi đã được rà soát theo <b>Thông báo Nội dung thi Vòng 1</b> của Ban Tổ chức.
+        <a href="#/scope">Xem đối chiếu phạm vi thi ↔ chương ôn tập →</a>
+      </div>
       <h2>Gợi ý lộ trình</h2>
       <div class="card small">
         <ol style="margin:0;padding-left:20px">
-          <li>Đọc phần <a href="#/notes">Tóm tắt</a> của từng chủ đề (đặc biệt là <b>AWS</b> vì không có trong bài giảng).</li>
+          <li>Đọc <a href="#/scope">Phạm vi thi</a> để biết BTC yêu cầu gì, rồi đọc <a href="#/notes">Tóm tắt</a> từng chủ đề (ưu tiên <b>AWS</b>, <b>OOP</b>, <b>Greedy &amp; QHĐ</b>, <b>NoSQL</b> vì không có trong bài giảng trên lớp).</li>
           <li>Luyện theo chương, đọc kỹ giải thích ở mỗi câu sai.</li>
           <li>Mỗi 2–3 ngày làm một đề <a href="#/exam">thi thử</a> tổng hợp để quen áp lực thời gian.</li>
           <li>Trước ngày thi: vào <a href="#/wrong">Câu sai</a> để làm lại các câu còn yếu.</li>
         </ol>
         <p class="muted" style="margin-bottom:0">Phím tắt khi làm bài: <kbd>1</kbd>–<kbd>4</kbd> hoặc <kbd>A</kbd>–<kbd>D</kbd> chọn đáp án, <kbd>Enter</kbd>/<kbd>→</kbd> câu tiếp, <kbd>←</kbd> câu trước, <kbd>F</kbd> cắm cờ.</p>
+      </div>
+    `);
+  }
+
+  // ---------- Phạm vi thi (BTC công bố) ----------
+  function viewScope() {
+    html(`
+      <p><a href="#/">← Tổng quan</a></p>
+      <h1>📋 Phạm vi thi Vòng 1 – BTC công bố</h1>
+      <p class="muted">Trích Thông báo <i>"Nội dung thi Vòng 1 – Dev-Champion"</i>: phạm vi kiến thức dự kiến của bài thi
+        <b>Trắc nghiệm tổng hợp</b>. Mỗi mục dưới đây kèm chương tương ứng trong ngân hàng câu hỏi để bạn luyện đúng trọng tâm.</p>
+      ${TOPICS.map(t => {
+        const T = QB[t];
+        if (!T) return '';
+        const chs = Object.keys(T.chapters);
+        const n = topicQs(t).length;
+        return `<div class="card" style="margin-bottom:14px">
+          <div class="row" style="margin-bottom:6px">
+            <b style="font-size:16px">${T.icon} ${esc(T.name)}</b>
+            <span class="spacer"></span>
+            <span class="pill gray">${n} câu</span>
+          </div>
+          <div class="muted small" style="margin-bottom:8px">Trọng tâm: ${esc(SCOPE_FOCUS[t] || '')}</div>
+          <ul class="small" style="margin:0 0 12px;padding-left:20px">
+            ${(SCOPE[t] || []).map(x => `<li>${esc(x)}</li>`).join('')}
+          </ul>
+          <div class="muted small" style="margin-bottom:6px">Chương ôn tập tương ứng:</div>
+          <div class="chips">
+            ${chs.map(ch => `<a class="chip" href="#/practice/${t}">${esc(T.chapters[ch])}</a>`).join('')}
+          </div>
+          <div class="row" style="margin-top:12px">
+            <a class="btn" href="#/practice/${t}">Luyện ${esc(T.short)} ▶</a>
+            <a class="btn ghost" href="#/notes/${t}">Tóm tắt lý thuyết</a>
+          </div>
+        </div>`;
+      }).join('')}
+      <div class="card small muted">
+        Thông báo của BTC không nêu số câu và thời lượng cụ thể của bài thi. Cấu hình thi thử mặc định
+        (<b>50 câu / 60 phút</b>, chia đều 5 nhóm) là ước lượng của tài liệu này – hãy chỉnh lại khi BTC công bố chi tiết.
       </div>
     `);
   }
@@ -243,7 +327,8 @@
     const cfg = store.get('examCfg', { per: { cpp: 10, dsa: 10, db: 10, aws: 10, net: 10 }, minutes: 60 });
     html(`
       <h1>⏱ Thi thử tổng hợp</h1>
-      <p class="muted">Thể lệ chưa công bố số câu và thời lượng cụ thể. Cấu hình mặc định: <b>50 câu / 60 phút</b>, chia đều 5 nhóm kiến thức – bạn có thể chỉnh lại khi BTC hướng dẫn ở buổi Kick-off.</p>
+      <p class="muted">Đề trộn câu từ <b>5 nhóm kiến thức BTC công bố</b> (<a href="#/scope">xem phạm vi</a>).
+        BTC chưa nêu số câu và thời lượng cụ thể, nên mặc định ở đây là <b>50 câu / 60 phút</b> chia đều 5 nhóm – chỉnh lại khi có hướng dẫn chính thức.</p>
       <div class="card">
         <div class="row" style="align-items:flex-end">
           ${TOPICS.map(t => `<label class="field">${QB[t].icon} ${esc(QB[t].short)}

@@ -470,17 +470,276 @@ cout << *p + 1;`],
       'Chú ý từ slide: mở tệp để ghi mà tệp đã tồn tại thì tệp cũ bị xóa; mở tệp để đọc thì tệp phải tồn tại, nếu không sẽ lỗi.'],
     ['c9', 'Hàm nào cho biết vị trí hiện tại của con trỏ đọc trong tệp `ifstream f`?',
       ['f.tellg()', 'f.eof()', 'f.close()', 'f.ignore()'],
-      'tellg() trả về vị trí con trỏ get (đọc); seekg() dùng để di chuyển con trỏ tới vị trí mong muốn; eof() kiểm tra đã hết tệp chưa.']
+      'tellg() trả về vị trí con trỏ get (đọc); seekg() dùng để di chuyển con trỏ tới vị trí mong muốn; eof() kiểm tra đã hết tệp chưa.'],
+
+    // ===== OOP: Lập trình hướng đối tượng =====
+    ['oop', 'Bốn tính chất cơ bản của lập trình hướng đối tượng là:',
+      ['Đóng gói (Encapsulation), Kế thừa (Inheritance), Đa hình (Polymorphism), Trừu tượng (Abstraction)', 'Biên dịch, Thông dịch, Liên kết, Thực thi', 'Khai báo, Khởi tạo, Gán, Hủy', 'Tuần tự, Rẽ nhánh, Lặp, Đệ quy'],
+      'Đóng gói: gom dữ liệu + hàm vào một lớp và che giấu chi tiết. Kế thừa: lớp con dùng lại lớp cha. Đa hình: cùng lời gọi, hành vi khác nhau. Trừu tượng: chỉ bộc lộ giao diện cần thiết.'],
+    ['oop', 'Quan hệ giữa **lớp (class)** và **đối tượng (object)** là:',
+      ['Lớp là khuôn mẫu mô tả dữ liệu và hành vi; đối tượng là một thể hiện (instance) cụ thể được tạo từ lớp', 'Đối tượng là khuôn mẫu, lớp là thể hiện của đối tượng', 'Lớp và đối tượng là hai tên gọi của cùng một thứ', 'Một lớp chỉ tạo được đúng một đối tượng'],
+      'Ví dụ `class SinhVien` là khuôn mẫu; `SinhVien a, b;` tạo hai đối tượng riêng, mỗi đối tượng có vùng dữ liệu riêng.'],
+    ['oop', 'Trong C++, khác biệt mặc định giữa `class` và `struct` là gì?',
+      ['Thành viên của `class` mặc định là `private`, của `struct` mặc định là `public`', '`struct` không thể có hàm thành viên', '`class` không thể kế thừa', '`struct` không thể có constructor'],
+      'Về mặt ngôn ngữ C++ coi `struct` và `class` gần như tương đương (đều có hàm thành viên, kế thừa, constructor); chỉ khác quyền truy cập mặc định và kiểu kế thừa mặc định.'],
+    ['oop', 'Phạm vi truy cập `protected` cho phép truy cập từ đâu?',
+      ['Từ bên trong lớp đó và từ các lớp kế thừa, nhưng không từ bên ngoài lớp', 'Từ mọi nơi giống như `public`', 'Chỉ từ bên trong lớp đó, giống hệt `private`', 'Chỉ từ hàm `main()`'],
+      '`private`: chỉ trong lớp (và hàm/lớp `friend`). `protected`: trong lớp + lớp dẫn xuất. `public`: mọi nơi.'],
+    ['oop', 'Đặc điểm nào đúng về **hàm tạo (constructor)**?',
+      ['Trùng tên với lớp, không có kiểu trả về (kể cả `void`), tự động gọi khi đối tượng được tạo', 'Có kiểu trả về là `void` và phải gọi thủ công', 'Tên bắt đầu bằng dấu `~`', 'Mỗi lớp chỉ được có đúng một constructor'],
+      'Constructor có thể nạp chồng (nhiều constructor khác tham số). Nếu không khai báo constructor nào, trình biên dịch sinh constructor mặc định không tham số.'],
+    ['oop', 'Đoạn code sau in ra gì?',
+      ['Tao Diem(3,4) rồi Huy Diem', 'Huy Diem rồi Tao Diem(3,4)', 'Chỉ in Tao Diem(3,4)', 'Không in gì vì thiếu lời gọi hàm'],
+      'Constructor chạy khi đối tượng `p` được tạo; destructor chạy tự động khi `p` ra khỏi phạm vi (cuối hàm main).',
+      `class Diem {
+    int x, y;
+public:
+    Diem(int a, int b) : x(a), y(b) { cout << "Tao Diem(" << x << "," << y << ")"; }
+    ~Diem() { cout << "Huy Diem"; }
+};
+int main() { Diem p(3, 4); return 0; }`],
+    ['oop', 'Danh sách khởi tạo `Diem(int a, int b) : x(a), y(b) { }` có tác dụng gì?',
+      ['Khởi tạo trực tiếp các thành viên x, y trước khi thân hàm tạo chạy – bắt buộc với thành viên `const` và tham chiếu', 'Chỉ là cách viết tắt, hoàn toàn tương đương gán trong thân hàm', 'Khai báo thêm hai biến cục bộ x, y', 'Luôn gọi hàm tạo của lớp cha'],
+      'Gán trong thân hàm là khởi tạo mặc định rồi mới gán; danh sách khởi tạo chỉ khởi tạo một lần, hiệu quả hơn và là cách duy nhất cho thành viên `const`, tham chiếu, hay lớp cha không có constructor mặc định.'],
+    ['oop', 'Hàm hủy (destructor) có đặc điểm nào?',
+      ['Tên là `~TenLop`, không tham số, không kiểu trả về, mỗi lớp chỉ có một, tự gọi khi đối tượng bị hủy', 'Có thể nạp chồng nhiều phiên bản khác tham số', 'Phải gọi thủ công bằng `delete`', 'Trả về `int` báo trạng thái hủy'],
+      'Destructor thường dùng để giải phóng tài nguyên lớp đã cấp phát (giải phóng bộ nhớ, đóng tệp).'],
+    ['oop', 'Con trỏ `this` bên trong hàm thành viên trỏ tới cái gì?',
+      ['Chính đối tượng đang gọi hàm thành viên đó', 'Lớp cha của lớp hiện tại', 'Hàm thành viên đang chạy', 'Vùng nhớ heap của chương trình'],
+      'Dùng `this->x = x;` để phân biệt thành viên với tham số cùng tên; `return *this;` cho phép gọi nối chuỗi như `a.set(1).show();`.'],
+    ['oop', '**Nạp chồng hàm (overloading)** nghĩa là:',
+      ['Nhiều hàm cùng tên trong cùng phạm vi nhưng khác danh sách tham số (số lượng hoặc kiểu)', 'Lớp con viết lại hàm của lớp cha với cùng chữ ký', 'Một hàm gọi chính nó', 'Hàm có quá nhiều tham số'],
+      'Chỉ khác kiểu trả về thì KHÔNG đủ để nạp chồng. Lớp con viết lại hàm cùng chữ ký của lớp cha gọi là ghi đè (overriding).'],
+    ['oop', 'Phân biệt **overloading** và **overriding**:',
+      ['Overloading: cùng tên, khác tham số, quyết định lúc biên dịch; Overriding: lớp con định nghĩa lại hàm `virtual` cùng chữ ký của lớp cha, quyết định lúc chạy', 'Hai khái niệm giống hệt nhau', 'Overloading chỉ xảy ra giữa lớp cha và lớp con', 'Overriding quyết định lúc biên dịch, overloading lúc chạy'],
+      'Overloading là đa hình tĩnh (compile-time). Overriding kết hợp con trỏ/tham chiếu lớp cha tạo ra đa hình động (runtime).'],
+    ['oop', 'Để có **đa hình động** trong C++, hàm của lớp cha phải được khai báo với từ khóa nào?',
+      ['virtual', 'static', 'const', 'inline'],
+      'Khi gọi hàm `virtual` qua con trỏ/tham chiếu lớp cha, chương trình tra bảng hàm ảo (vtable) để gọi đúng phiên bản của lớp con tại thời điểm chạy.'],
+    ['oop', 'Đoạn code sau in ra gì?',
+      ['Meo', 'Keu', 'Meo Keu', 'Lỗi biên dịch'],
+      '`keu()` là `virtual` nên lời gọi qua con trỏ `DongVat*` được phân giải lúc chạy theo kiểu thực tế của đối tượng (`Meo`). Nếu bỏ `virtual`, kết quả sẽ là "Keu".',
+      `class DongVat {
+public:
+    virtual void keu() { cout << "Keu"; }
+};
+class Meo : public DongVat {
+public:
+    void keu() override { cout << "Meo"; }
+};
+int main() {
+    DongVat* p = new Meo();
+    p->keu();
+}`],
+    ['oop', '**Lớp trừu tượng (abstract class)** trong C++ là lớp:',
+      ['Có ít nhất một hàm ảo thuần túy dạng `virtual void f() = 0;` và không thể tạo đối tượng trực tiếp', 'Không có thành viên dữ liệu', 'Chỉ chứa hằng số', 'Không thể bị kế thừa'],
+      'Lớp trừu tượng định nghĩa giao diện chung; lớp con bắt buộc cài đặt mọi hàm ảo thuần túy mới tạo được đối tượng.'],
+    ['oop', 'Tại sao lớp cha có hàm ảo nên khai báo **destructor là `virtual`**?',
+      ['Để khi hủy một đối tượng lớp con qua con trỏ lớp cha, destructor của lớp con cũng được gọi, tránh rò rỉ tài nguyên', 'Để tăng tốc độ chương trình', 'Để lớp con không được phép có destructor', 'Vì C++ bắt buộc mọi destructor phải là virtual'],
+      'Nếu destructor không `virtual`, lệnh `delete p;` với `Cha* p = new Con();` chỉ gọi `~Cha()` – phần tài nguyên do `Con` cấp phát bị bỏ lại.'],
+    ['oop', 'Trong `class B : public A { };`, kiểu kế thừa `public` nghĩa là:',
+      ['Thành viên `public` của A vẫn là `public` trong B, `protected` vẫn là `protected`; thành viên `private` của A không truy cập trực tiếp được', 'Mọi thành viên của A trở thành `public` trong B, kể cả `private`', 'B không thừa kế gì từ A', 'A trở thành lớp con của B'],
+      'Kế thừa `private` (mặc định khi dùng từ khóa `class`) biến mọi thành viên thừa kế thành `private` trong B.'],
+    ['oop', 'Khi tạo một đối tượng lớp con, thứ tự gọi hàm tạo – hàm hủy là:',
+      ['Hàm tạo lớp cha rồi hàm tạo lớp con; khi hủy thì ngược lại: hàm hủy lớp con rồi hàm hủy lớp cha', 'Hàm tạo lớp con rồi hàm tạo lớp cha; hủy theo đúng thứ tự đó', 'Chỉ gọi hàm tạo của lớp con', 'Thứ tự không xác định, phụ thuộc trình biên dịch'],
+      'Lớp cha được xây trước (nền móng) và hủy sau cùng – giống xây rồi dỡ một tòa nhà.'],
+    ['oop', '**Hàm tạo sao chép (copy constructor)** dạng `Lop(const Lop& other)` được gọi khi nào?',
+      ['Khi khởi tạo một đối tượng từ đối tượng khác cùng lớp, truyền đối tượng theo tham trị, hoặc trả về đối tượng theo trị', 'Mỗi lần gán `a = b;` giữa hai đối tượng đã tồn tại', 'Khi đối tượng bị hủy', 'Khi gọi bất kỳ hàm thành viên nào'],
+      'Gán giữa hai đối tượng đã tồn tại gọi toán tử `=`, không phải copy constructor. Lớp có con trỏ cấp phát động cần tự viết copy constructor để tránh sao chép nông (shallow copy).'],
+    ['oop', 'Thành viên `static` của một lớp có đặc điểm gì?',
+      ['Được chia sẻ chung cho mọi đối tượng của lớp, tồn tại ngay cả khi chưa có đối tượng nào, truy cập qua `TenLop::thanhVien`', 'Mỗi đối tượng có một bản sao riêng', 'Chỉ dùng được bên trong hàm tạo', 'Tự động bị hủy sau mỗi lời gọi hàm'],
+      'Ví dụ đếm số đối tượng đã tạo bằng `static int dem;` tăng trong constructor. Hàm `static` chỉ truy cập được thành viên `static` vì không có `this`.'],
+    ['oop', 'Đoạn code sau in ra giá trị nào?',
+      ['2', '1', '0', 'Lỗi biên dịch'],
+      '`dem` là `static` nên dùng chung cho cả lớp: hai lần tạo đối tượng làm `dem` tăng lên 2.',
+      `class A {
+public:
+    static int dem;
+    A() { dem++; }
+};
+int A::dem = 0;
+int main() {
+    A x, y;
+    cout << A::dem;
+}`],
+    ['oop', '**Nạp chồng toán tử (operator overloading)** cho phép:',
+      ['Định nghĩa lại ý nghĩa của toán tử có sẵn khi tác động lên đối tượng của lớp do ta tự định nghĩa', 'Tạo ra toán tử hoàn toàn mới tùy ý', 'Thay đổi độ ưu tiên của toán tử', 'Nạp chồng mọi toán tử, kể cả `.` và `::`'],
+      'Không thể thay đổi độ ưu tiên hay số ngôi, không tạo toán tử mới; các toán tử `.`, `::`, `?:`, `sizeof` không nạp chồng được.'],
+    ['oop', 'Hàm `friend` của một lớp là:',
+      ['Hàm không thuộc lớp nhưng được phép truy cập thành viên `private`/`protected` của lớp đó', 'Hàm thành viên luôn được gọi đầu tiên', 'Hàm thuộc lớp cha', 'Hàm chỉ gọi được từ lớp con'],
+      '`friend` phá vỡ tính đóng gói nên chỉ dùng khi thực sự cần, ví dụ nạp chồng toán tử xuất `<<` cho `cout`.'],
+    ['oop', 'Quan hệ "Xe máy **là một** Phương tiện" và "Xe máy **có một** Động cơ" tương ứng với:',
+      ['Kế thừa (is-a) và kết hợp/thành phần (has-a, composition)', 'Đa hình và đóng gói', 'Nạp chồng và ghi đè', 'Trừu tượng và `friend`'],
+      'Nguyên tắc thiết kế: ưu tiên composition hơn inheritance khi quan hệ không thực sự là "là một".'],
+    ['oop', 'Lợi ích chính của **đóng gói (encapsulation)** là gì?',
+      ['Che giấu dữ liệu bên trong, chỉ cho truy cập qua hàm `public` nên kiểm soát được tính hợp lệ và dễ thay đổi cài đặt', 'Làm chương trình chạy nhanh hơn', 'Giảm dung lượng file thực thi', 'Cho phép truy cập trực tiếp mọi biến thành viên'],
+      'Ví dụ hàm `setTuoi(int t)` có thể từ chối giá trị âm – điều không làm được nếu `tuoi` là `public`.'],
+    ['oop', 'Kết quả của đoạn code sau là gì?',
+      ['Lỗi biên dịch vì `x` là thành viên `private`, không truy cập được từ ngoài lớp', 'In ra 5', 'In ra 0', 'In ra địa chỉ của x'],
+      'Thành viên `private` chỉ truy cập được từ bên trong lớp. Muốn đọc giá trị phải thêm hàm `public` dạng getter: `int getX() { return x; }`.',
+      `class A {
+    int x = 5;
+};
+int main() {
+    A a;
+    cout << a.x;
+}`],
+
+    // ===== Xử lý lỗi & debugging =====
+    ['err', 'Trong C++, cơ chế xử lý ngoại lệ dùng bộ ba từ khóa nào?',
+      ['try – catch – throw', 'if – else – return', 'begin – rescue – end', 'open – read – close'],
+      'Khối `try` bao đoạn code có thể sinh lỗi; `throw` ném ngoại lệ; `catch` bắt và xử lý. Nếu không có `catch` phù hợp, chương trình bị kết thúc.'],
+    ['err', 'Đoạn code sau in ra gì?',
+      ['Loi: Chia cho 0 rồi Ket thuc', 'Chỉ in Ket thuc', 'Chỉ in Loi: Chia cho 0', 'Chương trình dừng đột ngột, không in gì'],
+      '`throw` chuyển ngay quyền điều khiển tới `catch` khớp kiểu nên lệnh in a/b bị bỏ qua; sau khối `catch` chương trình chạy tiếp bình thường.',
+      `int a = 10, b = 0;
+try {
+    if (b == 0) throw "Chia cho 0";
+    cout << a / b;
+} catch (const char* msg) {
+    cout << "Loi: " << msg;
+}
+cout << "Ket thuc";`],
+    ['err', '`catch (...)` có ý nghĩa gì?',
+      ['Bắt mọi loại ngoại lệ còn lại, thường đặt ở khối catch cuối cùng', 'Bắt đúng ba ngoại lệ', 'Bỏ qua mọi ngoại lệ mà không chạy code nào', 'Là cú pháp sai trong C++'],
+      'Các khối `catch` được xét lần lượt từ trên xuống nên `catch(...)` phải đặt cuối, nếu không sẽ che mất các catch cụ thể hơn.'],
+    ['err', 'Chương trình biên dịch và chạy bình thường nhưng tính sai điểm trung bình vì công thức viết nhầm. Đây là loại lỗi gì?',
+      ['Lỗi logic (ngữ nghĩa)', 'Lỗi cú pháp', 'Lỗi liên kết (linker error)', 'Lỗi tràn bộ nhớ'],
+      'Lỗi cú pháp bị trình biên dịch chặn; lỗi thời gian chạy làm chương trình dừng bất thường; lỗi logic nguy hiểm nhất vì chương trình vẫn chạy nhưng cho kết quả sai, chỉ phát hiện được bằng kiểm thử.'],
+    ['err', 'Đoạn code `int a[5]; for (int i = 0; i <= 5; i++) a[i] = i;` mắc lỗi gì?',
+      ['Lỗi lệch một đơn vị (off-by-one): ghi vào `a[5]` nằm ngoài mảng, gây hành vi không xác định', 'Lỗi cú pháp, thiếu dấu chấm phẩy', 'Không có lỗi, chương trình luôn chạy đúng', 'Lỗi chia cho 0'],
+      'Mảng `a[5]` có chỉ số hợp lệ 0..4. C++ không kiểm tra biên mảng nên lỗi có thể không báo ngay mà làm hỏng dữ liệu khác, rất khó debug. Sửa điều kiện thành `i < 5`.'],
+    ['err', 'Hiện tượng chương trình cấp phát bộ nhớ bằng `new` nhưng không bao giờ `delete` gọi là gì?',
+      ['Rò rỉ bộ nhớ (memory leak)', 'Tràn số (overflow)', 'Con trỏ treo (dangling pointer)', 'Bế tắc (deadlock)'],
+      'Bộ nhớ heap bị chiếm cho tới khi chương trình kết thúc; với chương trình chạy lâu sẽ cạn RAM. Mỗi `new` phải có `delete`, mỗi `new[]` phải có `delete[]`.'],
+    ['err', 'Sau `int* p = new int(5); delete p;`, nếu tiếp tục dùng `*p` thì p được gọi là:',
+      ['Con trỏ treo (dangling pointer) – trỏ tới vùng nhớ đã giải phóng, truy cập cho hành vi không xác định', 'Con trỏ NULL hợp lệ', 'Con trỏ hằng', 'Con trỏ void'],
+      'Thói quen an toàn: viết `delete p; p = nullptr;` vì `delete` trên con trỏ `nullptr` là vô hại.'],
+    ['err', 'Biến cục bộ `int s;` không khởi tạo rồi dùng ngay `s += a[i];` gây hậu quả gì?',
+      ['`s` chứa giá trị rác không xác định nên kết quả sai và có thể khác nhau mỗi lần chạy', '`s` luôn tự động bằng 0 nên chương trình vẫn đúng', 'Chương trình không biên dịch được', 'Chương trình luôn bị treo'],
+      'Chỉ biến toàn cục và biến `static` mới được tự khởi tạo bằng 0. Biến cục bộ phải khởi tạo tường minh: `int s = 0;`'],
+    ['err', 'Đoạn code `for (int i = 0; i < n; ) cout << i;` gặp vấn đề gì?',
+      ['Vòng lặp vô hạn vì biến điều khiển `i` không bao giờ thay đổi', 'Lỗi cú pháp vì thiếu bước nhảy', 'Chạy đúng n lần', 'Không chạy lần nào'],
+      'Vòng lặp vô hạn thường do quên tăng biến đếm, điều kiện dừng sai, hoặc so sánh số thực bằng `==`.'],
+    ['err', 'Hàm đệ quy thiếu điều kiện dừng sẽ gây lỗi thời gian chạy nào?',
+      ['Tràn ngăn xếp (stack overflow) do số lời gọi lồng nhau không giới hạn', 'Tràn bộ nhớ heap', 'Lỗi chia cho 0', 'Lỗi cú pháp'],
+      'Mỗi lời gọi hàm chiếm một khung ngăn xếp; ngăn xếp có giới hạn nên đệ quy vô hạn làm chương trình sập.'],
+    ['err', 'Với `int` 32 bit, đoạn `int x = 2147483647; x = x + 1;` cho kết quả gì?',
+      ['Tràn số: x trở thành −2147483648 (quay vòng)', 'x = 2147483648', 'Chương trình báo lỗi biên dịch', 'x giữ nguyên 2147483647'],
+      'Phạm vi `int` 32 bit là −2³¹ đến 2³¹−1. Cần dùng `long long` khi giá trị có thể vượt khoảng này – lỗi rất hay gặp khi tính tổng hoặc giai thừa.'],
+    ['err', 'So sánh hai số thực bằng `if (a == b)` là không an toàn vì:',
+      ['Số thực được lưu xấp xỉ theo chuẩn dấu phẩy động nên phép tính có sai số; nên so sánh `fabs(a − b) < eps`', 'Toán tử `==` không dùng được cho kiểu `double`', 'Số thực luôn bằng nhau', 'Trình biên dịch sẽ báo lỗi'],
+      'Ví dụ `0.1 + 0.2 == 0.3` cho kết quả sai (false) trong hầu hết môi trường.'],
+    ['err', 'Khi debug bằng IDE, **breakpoint** và **step over / step into** dùng để làm gì?',
+      ['Dừng chương trình tại dòng chỉ định để xem giá trị biến; chạy từng dòng, bỏ qua hoặc đi vào bên trong lời gọi hàm', 'Tự động sửa lỗi cú pháp trong code', 'Biên dịch lại toàn bộ dự án', 'Đo dung lượng bộ nhớ của file nguồn'],
+      'Kỹ thuật debug cơ bản: đặt breakpoint, chạy từng bước, quan sát cửa sổ Watch/Locals. Cách thủ công là chèn lệnh in giá trị trung gian.'],
+    ['err', 'Macro `assert(dieu_kien)` trong `<cassert>` có tác dụng gì?',
+      ['Kiểm tra giả định khi chạy; nếu điều kiện sai thì in thông báo và dừng chương trình, giúp phát hiện lỗi sớm khi phát triển', 'Bắt mọi ngoại lệ trong chương trình', 'Tự động sửa giá trị biến cho đúng', 'Ghi log ra file văn bản'],
+      '`assert` bị vô hiệu khi biên dịch bản release có định nghĩa `NDEBUG`, nên không dùng nó để kiểm tra dữ liệu nhập của người dùng.'],
+    ['err', 'Lỗi "undefined reference to tinhTong(int, int)" khi build thuộc loại nào?',
+      ['Lỗi liên kết (linker error) – đã khai báo nguyên mẫu hàm nhưng chưa định nghĩa phần thân', 'Lỗi cú pháp trong câu lệnh gọi hàm', 'Lỗi thời gian chạy khi hàm trả về sai giá trị', 'Lỗi tràn mảng'],
+      'Quy trình build: tiền xử lý → biên dịch (phát hiện lỗi cú pháp) → liên kết (ghép các file đối tượng, phát hiện hàm/biến thiếu định nghĩa) → chạy.'],
+    ['err', 'Cách phòng tránh lỗi tốt nhất khi hàm nhận con trỏ từ bên ngoài là:',
+      ['Kiểm tra con trỏ khác `nullptr` trước khi truy cập nội dung', 'Luôn `delete` con trỏ ngay đầu hàm', 'Ép kiểu con trỏ sang `int`', 'Khai báo con trỏ là biến toàn cục'],
+      'Truy cập qua con trỏ `nullptr` gây lỗi segmentation fault – một trong các lỗi thời gian chạy phổ biến nhất.'],
+    ['err', 'Đoạn code sau có lỗi gì?',
+      ['Dấu `;` ngay sau `if (x > 0)` tạo thành lệnh rỗng nên khối sau luôn được thực hiện bất kể x', 'Thiếu dấu ngoặc nhọn nên không biên dịch được', 'Toán tử `>` dùng sai cho kiểu int', 'Không có lỗi'],
+      'Lỗi "dấu chấm phẩy thừa" rất khó thấy: trình biên dịch không báo gì nhưng logic sai hoàn toàn. Tương tự với `for(...);` và `while(...);`.',
+      `int x = -5;
+if (x > 0);
+{
+    cout << "Duong";
+}`],
+
+    // ===== Đọc hiểu, tính đúng đắn & tối ưu code =====
+    ['ana', 'Đoạn code sau in ra gì?',
+      ['15', '10', '21', '0'],
+      'Vòng lặp cộng dồn 1+2+3+4+5 = 15 (i chạy tới 5 vì điều kiện là `i <= 5`).',
+      `int s = 0;
+for (int i = 1; i <= 5; i++) s += i;
+cout << s;`],
+    ['ana', 'Hàm kiểm tra số nguyên tố sau nên tối ưu thế nào?',
+      ['Chỉ lặp `i` tới `sqrt(n)` vì nếu n có ước lớn hơn căn bậc hai của n thì phải có ước nhỏ hơn tương ứng – giảm từ O(n) xuống O(√n)', 'Lặp tới `n/4` để nhanh gấp 4 lần và vẫn luôn đúng', 'Bỏ hẳn vòng lặp, chỉ cần kiểm tra n lẻ là đủ', 'Đổi `int` thành `double` cho nhanh hơn'],
+      'Với n = 10⁹, cách O(n) cần khoảng 10⁹ phép chia còn O(√n) chỉ khoảng 31623 phép.',
+      `bool laNguyenTo(int n) {
+    if (n < 2) return false;
+    for (int i = 2; i < n; i++)
+        if (n % i == 0) return false;
+    return true;
+}`],
+    ['ana', 'Vì sao nên truyền đối tượng lớn vào hàm bằng `const` tham chiếu thay vì truyền theo trị?',
+      ['Truyền theo trị tạo một bản sao toàn bộ dữ liệu tốn O(n) thời gian và bộ nhớ; tham chiếu hằng tránh sao chép mà vẫn bảo đảm hàm không sửa dữ liệu gốc', 'Truyền theo trị gây lỗi biên dịch với kiểu vector', 'Tham chiếu hằng cho phép hàm sửa dữ liệu gốc dễ dàng hơn', 'Không có khác biệt, trình biên dịch luôn tối ưu như nhau'],
+      'Với kiểu nhỏ như `int`, `char`, `double` thì truyền theo trị vẫn tốt hơn vì tránh một lần giải tham chiếu.'],
+    ['ana', 'Trong hai cách viết sau, cách nào tốt hơn về hiệu năng và vì sao?',
+      ['Cách B tốt hơn vì `s.length()` được tính một lần thay vì gọi lại ở mỗi lần lặp', 'Cách A tốt hơn vì ít biến hơn', 'Hai cách hoàn toàn như nhau trong mọi trình biên dịch', 'Cách A sai cú pháp'],
+      'Nguyên tắc chung: đưa các tính toán không đổi ra ngoài vòng lặp. Đây cũng là lỗi hiệu năng hay bị hỏi trong đề đọc hiểu code.',
+      `// Cach A
+for (int i = 0; i < s.length(); i++) ...
+
+// Cach B
+int n = s.length();
+for (int i = 0; i < n; i++) ...`],
+    ['ana', 'Đoạn code sau có độ phức tạp thời gian là bao nhiêu?',
+      ['O(n²)', 'O(n)', 'O(n log n)', 'O(log n)'],
+      'Vòng ngoài n lần, vòng trong n lần nên tổng là n·n = n² phép toán.',
+      `for (int i = 0; i < n; i++)
+    for (int j = 0; j < n; j++)
+        if (a[i] == b[j]) dem++;`],
+    ['ana', 'Muốn đếm số phần tử chung của hai mảng n phần tử nhanh hơn O(n²), cách nào hợp lý nhất?',
+      ['Đưa mảng b vào bảng băm rồi duyệt a tra cứu – trung bình O(n)', 'Sắp xếp mảng a rồi vẫn duyệt lồng hai vòng for', 'Dùng đệ quy thay cho vòng lặp', 'Chuyển mảng sang kiểu `double` để so sánh nhanh hơn'],
+      'Đây là ví dụ điển hình của việc đổi bộ nhớ lấy thời gian: tốn thêm O(n) bộ nhớ nhưng giảm thời gian từ O(n²) xuống O(n). Cách sắp xếp cả hai mảng rồi duyệt song song cho O(n log n).'],
+    ['ana', 'Đoạn code sau in ra gì?',
+      ['3', '4', '0', 'Lỗi biên dịch'],
+      'Toán tử `&&` tính ngắn mạch: `x++ > 0` cho 3 > 0 đúng, x thành 4; tiếp tục tính `++y < 1` nên y = 1, 1 < 1 sai. In x − y = 4 − 1 = 3.',
+      `int x = 3, y = 0;
+if (x++ > 0 && ++y < 1) { }
+cout << x - y;`],
+    ['ana', 'Hàm tìm giá trị lớn nhất sau sai ở đâu?',
+      ['Khởi tạo `max = 0` nên nếu mọi phần tử đều âm thì kết quả trả về 0 là sai; phải khởi tạo `max = a[0]`', 'Vòng lặp chạy thiếu một phần tử', 'Phải dùng `>=` thay cho `>`', 'Hàm không có lỗi nào'],
+      'Đây là lỗi về tính đúng đắn ở trường hợp biên – cần luôn thử với mảng toàn số âm, mảng một phần tử, mảng rỗng.',
+      `int timMax(int a[], int n) {
+    int max = 0;
+    for (int i = 0; i < n; i++)
+        if (a[i] > max) max = a[i];
+    return max;
+}`],
+    ['ana', 'Trong vòng lặp duyệt bằng iterator, vì sao nên viết `++it` thay vì `it++`?',
+      ['`it++` phải tạo và trả về một bản sao của iterator trước khi tăng, còn `++it` tăng trực tiếp nên tránh được chi phí sao chép', '`it++` gây lỗi biên dịch với iterator', '`++it` duyệt ngược danh sách', 'Hai cách cho kết quả duyệt khác nhau'],
+      'Với kiểu nguyên đơn giản thì trình biên dịch tối ưu như nhau, nhưng với iterator hay đối tượng thì dạng tiền tố thường rẻ hơn.'],
+    ['ana', 'Để tăng tốc nhập/xuất khi dữ liệu lớn trong C++, kỹ thuật phổ biến nhất là:',
+      ['Thêm `ios_base::sync_with_stdio(false); cin.tie(NULL);` ở đầu hàm main để bỏ đồng bộ với stdio của C', 'Dùng `endl` thay cho `"\\n"` sau mỗi dòng', 'Khai báo mọi biến là toàn cục', 'Dùng `double` thay cho `int` khi đọc số nguyên'],
+      'Lưu ý ngược lại: `endl` còn gọi `flush` nên CHẬM hơn `"\\n"` khi in nhiều dòng.'],
+    ['ana', 'Đoạn code sau thực hiện phép kiểm tra gì với số nguyên dương n?',
+      ['Kiểm tra n có phải lũy thừa của 2 hay không', 'Tính n chia 2', 'Đếm số bit 1 của n', 'Đảo ngược các bit của n'],
+      'Lũy thừa của 2 có đúng một bit 1; khi đó n − 1 đảo mọi bit thấp hơn nên phép AND bằng 0. Ví dụ n = 8 (1000) và n − 1 = 7 (0111).',
+      `bool f(int n) {
+    return n > 0 && (n & (n - 1)) == 0;
+}`],
+    ['ana', 'Tính Fibonacci bằng đệ quy thuần túy có độ phức tạp O(2ⁿ). Cách tối ưu đơn giản nhất là:',
+      ['Lưu lại kết quả đã tính vào mảng (memoization) hoặc tính lặp từ dưới lên, giảm còn O(n)', 'Đổi kiểu trả về sang `long long` là đủ nhanh', 'Dùng đệ quy đuôi để trình biên dịch tự tăng tốc theo cấp số nhân', 'Gọi hàm nhiều lần hơn để tận dụng cache CPU'],
+      'Đệ quy thuần tính lại rất nhiều giá trị trùng lặp. Đây chính là ý tưởng của quy hoạch động.'],
+    ['ana', 'Hai đoạn code duyệt ma trận vuông: (A) duyệt theo dòng `a[i][j]`, (B) duyệt theo cột `a[j][i]`. Nhận xét đúng là:',
+      ['Cả hai cùng O(n²) nhưng A thường nhanh hơn trong thực tế vì truy cập bộ nhớ liên tục, tận dụng tốt bộ nhớ đệm', 'A là O(n²) còn B là O(n³)', 'B nhanh hơn vì truy cập ngược', 'Hai cách luôn chạy hệt nhau vì cùng độ phức tạp'],
+      'Độ phức tạp như nhau nhưng hằng số ẩn khác nhau. Trong C/C++ mảng hai chiều lưu theo dòng (row-major) nên duyệt theo dòng thân thiện với cache hơn.'],
+    ['ana', 'Khi được hỏi "đoạn code này có đúng không", thứ tự kiểm tra hợp lý nhất là:',
+      ['Thử trường hợp bình thường, rồi trường hợp biên (n = 0, n = 1, phần tử âm, phần tử trùng nhau), rồi tràn số và chia cho 0', 'Chỉ cần chạy thử một bộ dữ liệu bất kỳ là đủ kết luận', 'Đo thời gian chạy trước, đúng sai tính sau', 'Đếm số dòng code'],
+      'Đề trắc nghiệm đọc hiểu code thường gài sai ở trường hợp biên: mảng rỗng, một phần tử, giá trị âm, chỉ số lệch một đơn vị.'],
+    ['ana', 'Đoạn code sau in ra gì?',
+      ['0', '1', '5', 'Lỗi biên dịch'],
+      'Phép chia hai số nguyên cho kết quả nguyên: 1/2 = 0, sau đó mới ép sang `double` để gán. Muốn ra 0.5 phải viết `1.0/2` hoặc ép kiểu một toán hạng.',
+      `double x = 1 / 2;
+cout << x;`]
   ];
 
   window.QB = window.QB || {};
   window.QB.cpp = {
     name: 'Lập trình C++', short: 'Lập trình', icon: '💻',
-    desc: 'Cơ sở lập trình C++: kiểu dữ liệu, toán tử, điều khiển, hàm, mảng, xâu, struct, con trỏ, tệp.',
+    desc: 'Nền tảng ngôn ngữ, kiểu dữ liệu, toán tử, điều khiển, hàm & đệ quy, mảng/chuỗi, OOP, xử lý lỗi & debug, đọc hiểu và tối ưu code.',
     chapters: {
       c1: 'C1 · Khái niệm & thuật toán', c2: 'C2 · Kiểu dữ liệu & toán tử', c3: 'C3 · Cấu trúc điều khiển',
       c4: 'C4 · Hàm & đệ quy', c5: 'C5 · Mảng', c6: 'C6 · Xâu ký tự', c7: 'C7 · Struct & Union',
-      c8: 'C8 · Con trỏ', c9: 'C9 · Tệp'
+      c8: 'C8 · Con trỏ', c9: 'C9 · Tệp',
+      oop: 'OOP · Hướng đối tượng', err: 'Xử lý lỗi & Debug', ana: 'Đọc hiểu & Tối ưu code'
     },
     questions: L.map((x, i) => ({ id: 'cpp-' + (i + 1), ch: x[0], q: x[1], opts: x[2], a: 0, exp: x[3], code: x[4] }))
   };

@@ -39,7 +39,35 @@ cpp: `
   <li><code>int (*f)(int,int)</code> là con trỏ hàm; <code>int *f(int,int)</code> là hàm trả về con trỏ.</li>
   <li><code>malloc/calloc/realloc</code> + <code>free</code> (phải ép kiểu từ <code>void*</code>); <code>new</code> + <code>delete</code>.</li>
   <li>Tệp: khai báo → mở → xử lý → đóng. <code>ifstream</code> (in), <code>ofstream</code> (out), <code>ios::app</code> ghi thêm, <code>ios::trunc</code> xóa cũ, <code>ios::binary</code>; <code>f.write((char*)&amp;x, sizeof(x))</code>.</li>
-</ul>`,
+</ul>
+<h3>OOP – Lập trình hướng đối tượng</h3>
+<ul>
+  <li>4 tính chất: <b>Đóng gói</b> (che dữ liệu, truy cập qua getter/setter) · <b>Kế thừa</b> (dùng lại lớp cha) · <b>Đa hình</b> (cùng lời gọi, hành vi khác) · <b>Trừu tượng</b> (chỉ lộ giao diện).</li>
+  <li>Truy cập: <code>private</code> (trong lớp + friend) &lt; <code>protected</code> (+ lớp con) &lt; <code>public</code>. Mặc định: <code>class</code> → private, <code>struct</code> → public.</li>
+  <li>Constructor: trùng tên lớp, KHÔNG kiểu trả về, nạp chồng được; danh sách khởi tạo <code>: x(a), y(b)</code> bắt buộc với thành viên <code>const</code>/tham chiếu. Destructor <code>~Lop()</code>: duy nhất, không tham số.</li>
+  <li>Thứ tự: tạo cha → tạo con; hủy con → hủy cha. Lớp cha có hàm ảo ⇒ destructor phải <code>virtual</code>, nếu không sẽ rò rỉ tài nguyên.</li>
+  <li><b>Overload</b> (cùng tên, khác tham số, quyết định lúc biên dịch) ≠ <b>Override</b> (lớp con viết lại hàm <code>virtual</code> cùng chữ ký, quyết định lúc chạy qua vtable).</li>
+  <li>Hàm ảo thuần <code>virtual void f() = 0;</code> → lớp trừu tượng, không tạo được đối tượng. <code>static</code>: dùng chung cả lớp, truy cập <code>Lop::x</code>. <code>this</code>: trỏ tới đối tượng đang gọi.</li>
+  <li>Copy constructor <code>Lop(const Lop&amp;)</code> gọi khi khởi tạo từ đối tượng khác, truyền/trả về theo trị (KHÁC toán tử gán). Quan hệ: kế thừa = "is-a", composition = "has-a".</li>
+</ul>
+<h3>Xử lý lỗi &amp; debugging</h3>
+<ul>
+  <li>Các loại lỗi: <b>cú pháp</b> (trình biên dịch chặn) · <b>liên kết</b> (undefined reference – thiếu định nghĩa hàm) · <b>thời gian chạy</b> (chia 0, truy cập nullptr, tràn mảng) · <b>logic</b> (chạy được nhưng sai – nguy hiểm nhất).</li>
+  <li><code>try { … throw x; } catch (kiểu e) { … } catch (...) { }</code> – khối <code>catch(...)</code> phải đặt CUỐI cùng.</li>
+  <li>Bẫy hay gặp: <code>i &lt;= n</code> tràn mảng (off-by-one) · biến cục bộ không khởi tạo = giá trị rác · <code>if (x&gt;0);</code> dấu chấm phẩy thừa · quên tăng biến đếm → lặp vô hạn · đệ quy thiếu điểm dừng → stack overflow.</li>
+  <li>Bộ nhớ: thiếu <code>delete</code> → memory leak; dùng sau <code>delete</code> → dangling pointer (nên gán <code>nullptr</code>); <code>new[]</code> phải đi với <code>delete[]</code>.</li>
+  <li>Tràn số: <code>int</code> 32 bit chỉ tới 2 147 483 647 → dùng <code>long long</code>. So sánh số thực phải dùng <code>fabs(a−b) &lt; eps</code>, không dùng <code>==</code>.</li>
+  <li>Công cụ: breakpoint + step over/into + cửa sổ Watch; <code>assert()</code> kiểm tra giả định khi phát triển (bị tắt khi định nghĩa <code>NDEBUG</code>).</li>
+</ul>
+<h3>Đọc hiểu &amp; tối ưu code</h3>
+<ul>
+  <li>Kiểm tra tính đúng đắn theo thứ tự: trường hợp thường → biên (n = 0, n = 1, số âm, phần tử trùng) → tràn số, chia 0.</li>
+  <li>Tối ưu kinh điển: kiểm tra nguyên tố chỉ tới <code>√n</code> (O(n) → O(√n)) · đưa <code>s.length()</code> ra ngoài vòng lặp · memo hóa Fibonacci (O(2ⁿ) → O(n)) · dùng bảng băm thay hai vòng for lồng nhau (O(n²) → O(n)).</li>
+  <li>Truyền đối tượng lớn bằng <code>const T&amp;</code> để tránh sao chép O(n); dùng <code>++it</code> thay <code>it++</code> với iterator; duyệt mảng hai chiều theo DÒNG (row-major, thân thiện cache).</li>
+  <li>Tăng tốc I/O: <code>ios_base::sync_with_stdio(false); cin.tie(NULL);</code> và dùng <code>"\n"</code> thay <code>endl</code>.</li>
+  <li>Mẹo bit: <code>n &amp; (n−1)</code> bằng 0 ⇔ n là lũy thừa của 2. Nhớ <code>&amp;&amp;</code> và <code>||</code> tính ngắn mạch.</li>
+</ul>
+`,
 
 dsa: `
 <h3>Độ phức tạp</h3>
@@ -70,6 +98,27 @@ dsa: `
   <li>Bậc nút = số cây con; lá bậc 0; mức gốc = 0; mức k có tối đa 2ᵏ nút.</li>
   <li>NLR (trước), LNR (giữa), LRN (sau). LNR của BST cho dãy tăng dần.</li>
   <li>BST: thêm/tìm/xóa O(h); xóa nút 2 con → thế mạng bằng nút trái nhất cây con phải hoặc phải nhất cây con trái. Xấu nhất O(n) khi cây suy biến.</li>
+</ul>
+<h3>Heap &amp; hàng đợi ưu tiên</h3>
+<ul>
+  <li>Cây nhị phân gần hoàn chỉnh, cha ≥ con (max-heap) hoặc cha ≤ con (min-heap). KHÔNG ràng buộc trái &lt; phải như BST.</li>
+  <li>Lưu bằng mảng, chỉ số từ 0: con trái <code>2i+1</code>, con phải <code>2i+2</code>, cha <code>(i−1)/2</code>.</li>
+  <li>Chèn (sift-up) và lấy phần tử ưu tiên nhất (sift-down): O(log n); xem gốc: O(1); dựng heap từ mảng: O(n).</li>
+  <li>Ứng dụng: hàng đợi ưu tiên, Heap Sort O(n log n) tại chỗ, Dijkstra &amp; Prim, tìm k phần tử lớn nhất bằng min-heap kích thước k → O(n log k).</li>
+</ul>
+<h3>Quay lui (Backtracking)</h3>
+<ul>
+  <li>Khung: nếu đủ lời giải thì ghi nhận; ngược lại với mỗi lựa chọn hợp lệ: <b>chọn → gọi đệ quy → bỏ chọn</b>. Bản chất là DFS trên cây không gian trạng thái.</li>
+  <li><b>Cắt tỉa (pruning)</b>: loại sớm nhánh chắc chắn không dẫn tới lời giải – không đổi độ phức tạp lý thuyết nhưng cải thiện rất lớn trong thực tế.</li>
+  <li>Bài toán kinh điển: 8 quân hậu (92 lời giải), mã đi tuần, Sudoku, sinh hoán vị O(n!·n), sinh tập con O(2ⁿ·n).</li>
+</ul>
+<h3>Tham lam &amp; Quy hoạch động</h3>
+<ul>
+  <li><b>Tham lam</b>: mỗi bước chọn tốt nhất cục bộ, không xét lại. ĐÚNG với: xếp lịch hoạt động (chọn <i>kết thúc sớm nhất</i>), cái túi phân số (sắp theo giá trị/khối lượng), mã Huffman, Kruskal, Prim, Dijkstra. SAI với: đổi tiền mệnh giá {1, 3, 4} số tiền 6 (tham lam 4+1+1 = 3 tờ, tối ưu 3+3 = 2 tờ) và cái túi 0/1.</li>
+  <li><b>Quy hoạch động</b> dùng khi có <i>cấu trúc con tối ưu</i> + <i>bài toán con gối nhau</i>. Hai cách cài đặt: top-down (đệ quy + memo hóa) và bottom-up (lặp điền bảng).</li>
+  <li>Cái túi 0/1: <code>f[i][w] = max(f[i−1][w], f[i−1][w−kl[i]] + gt[i])</code> – O(n·W), là đa thức giả (pseudo-polynomial).</li>
+  <li>LCS hai xâu: ký tự giống nhau → <code>f[i−1][j−1]+1</code>, khác → <code>max(f[i−1][j], f[i][j−1])</code>, O(m·n). LIS: O(n²) hoặc O(n log n) kết hợp tìm nhị phân. Kadane (tổng dãy con liên tiếp lớn nhất): O(n).</li>
+  <li>Phân biệt: chia để trị có bài toán con ĐỘC LẬP (Merge Sort) ≠ quy hoạch động có bài toán con GỐI nhau.</li>
 </ul>
 <h3>Bảng băm & đồ thị</h3>
 <ul>
@@ -120,6 +169,22 @@ db: `
   <li>Chuyển đổi: 1:N → khóa bên 1 thành khóa ngoại bên N; M:N → bảng mới (khóa hai bên + thuộc tính riêng); thực thể yếu và thuộc tính đa trị → bảng mới.</li>
   <li><code>CHAR(n)</code> cố định, <code>VARCHAR(n)</code> thay đổi; <code>DECIMAL(7,2)</code> = 7 chữ số, 2 số thập phân.</li>
   <li>Giao dịch ACID (Atomicity, Consistency, Isolation, Durability); COMMIT / ROLLBACK.</li>
+</ul>
+<h3>Giao dịch, ACID &amp; toàn vẹn dữ liệu</h3>
+<ul>
+  <li>Giao dịch = đơn vị công việc logic, "tất cả hoặc không gì cả". <b>A</b>tomicity (lỗi thì ROLLBACK toàn bộ) · <b>C</b>onsistency (vẫn thỏa mọi ràng buộc) · <b>I</b>solation (giao dịch đồng thời không ảnh hưởng nhau) · <b>D</b>urability (đã COMMIT thì không mất, nhờ transaction log .ldf – ghi log trước, ghi dữ liệu sau).</li>
+  <li>Sự cố đồng thời: <b>Dirty read</b> (đọc dữ liệu chưa commit) · <b>Lost update</b> (ghi đè lên nhau) · <b>Non-repeatable read</b> (đọc lại một dòng ra giá trị khác) · <b>Phantom read</b> (truy vấn lại thấy thêm/bớt DÒNG) · <b>Deadlock</b> (DBMS hủy một bên).</li>
+  <li>Mức cô lập tăng dần: READ UNCOMMITTED → READ COMMITTED (mặc định, chặn dirty read) → REPEATABLE READ → SERIALIZABLE (chặn cả phantom). Cơ chế: khóa chia sẻ/độc quyền hoặc MVCC. <code>SAVE TRAN</code> tạo điểm quay lui giữa chừng.</li>
+  <li>Toàn vẹn: <b>thực thể</b> ← PRIMARY KEY · <b>tham chiếu</b> ← FOREIGN KEY (NO ACTION mặc định / CASCADE / SET NULL / SET DEFAULT) · <b>miền</b> ← kiểu dữ liệu, CHECK, NOT NULL, DEFAULT.</li>
+  <li>Index: tăng tốc SELECT/WHERE/JOIN nhưng làm CHẬM INSERT/UPDATE/DELETE và tốn dung lượng; không hiệu quả trên cột có độ chọn lọc thấp (vd GioiTinh chỉ 2 giá trị).</li>
+</ul>
+<h3>NoSQL &amp; lựa chọn CSDL</h3>
+<ul>
+  <li>4 kiểu: <b>key–value</b> (Redis, DynamoDB – cache, session, giỏ hàng) · <b>document</b> (MongoDB – JSON/BSON; collection ↔ bảng, document ↔ dòng, field ↔ cột) · <b>column-family</b> (Cassandra, HBase) · <b>graph</b> (Neo4j, Neptune – quan hệ nhiều tầng).</li>
+  <li>Mở rộng <b>theo chiều dọc</b> (nâng cấp máy, có giới hạn) ≠ <b>theo chiều ngang</b> (thêm nhiều máy – hướng NoSQL được thiết kế để tận dụng).</li>
+  <li><b>CAP</b>: hệ phân tán chỉ đạt tối đa 2 trong 3 (Consistency, Availability, Partition tolerance) → thực tế chọn CP hoặc AP. <b>BASE</b> (Basically Available, Soft state, Eventually consistent) đổi nhất quán tức thì lấy tính sẵn sàng và khả năng mở rộng.</li>
+  <li>Chọn <b>quan hệ</b> khi dữ liệu có cấu trúc rõ, quan hệ chặt chẽ, cần ACID nghiêm ngặt (ngân hàng, kế toán). Chọn <b>NoSQL</b> khi lược đồ linh hoạt, dữ liệu rất lớn, cần độ trễ thấp và mở rộng ngang; NoSQL thường phi chuẩn hóa / nhúng dữ liệu con để đọc một lần thay vì JOIN.</li>
+  <li>OLTP (nhiều giao dịch nhỏ, cập nhật liên tục) ≠ OLAP (phân tích, báo cáo tổng hợp – Redshift, Athena).</li>
 </ul>`,
 
 aws: `
@@ -143,6 +208,30 @@ aws: `
 <tr><td>Quản trị</td><td>CloudWatch (metrics, logs, alarms) · CloudTrail (ai gọi API gì) · Config (lịch sử cấu hình) · CloudFormation (IaC) · Trusted Advisor · Organizations (consolidated billing, SCP)</td></tr>
 <tr><td>Chi phí</td><td>Pricing Calculator (ước tính trước) · Cost Explorer (phân tích) · Budgets (cảnh báo) · Free Tier · Support: Basic → Developer → Business → Enterprise On-Ramp → Enterprise (TAM)</td></tr>
 <tr><td>Khác</td><td>SQS (hàng đợi) · SNS (pub/sub) · Kinesis (streaming) · Glue (ETL) · QuickSight (BI) · IoT Core · SageMaker · Bedrock (gen AI) · Rekognition · Polly · Transcribe · Lex</td></tr>
+</table></div>
+<h3>Co giãn, sẵn sàng &amp; chọn dịch vụ</h3>
+<ul>
+  <li><b>Scalability</b> (đáp ứng được tải lớn hơn khi thêm tài nguyên) ≠ <b>Elasticity</b> (tự động thêm/bớt theo nhu cầu). <b>High Availability</b> (giảm downtime, có thể gián đoạn ngắn khi failover) ≠ <b>Fault Tolerance</b> (chạy liên tục dù một thành phần lỗi).</li>
+  <li><b>ELB</b> phân phối tải (ALB tầng 7, định tuyến theo URL/host; NLB tầng 4, độ trễ cực thấp, IP tĩnh) – <b>Auto Scaling</b> thay đổi SỐ LƯỢNG máy (min / desired / max). Chính sách: target tracking, step, scheduled (sự kiện biết trước), predictive. Dùng health check của ELB để phát hiện máy còn sống nhưng ứng dụng đã treo.</li>
+  <li>Scale <b>up</b> (đổi instance lớn hơn, có giới hạn) ≠ scale <b>out</b> (thêm instance sau load balancer – hướng ưu tiên trên cloud).</li>
+  <li>Phạm vi dịch vụ: <b>Global</b> – IAM, Route 53, CloudFront, Organizations; <b>theo Region</b> – S3, DynamoDB, Lambda; <b>theo AZ</b> – EC2 instance, EBS, subnet. Đa AZ chống lỗi trung tâm dữ liệu; đa Region chống lỗi khu vực.</li>
+</ul>
+<h3>Chọn dịch vụ theo bài toán</h3>
+<div class="tbl-scroll"><table>
+<tr><th>Yêu cầu</th><th>Dịch vụ</th></tr>
+<tr><td>Lưu ảnh/video người dùng, dung lượng không giới hạn</td><td>S3 (+ CloudFront nếu cần phân phối toàn cầu)</td></tr>
+<tr><td>Xử lý ngắn, tải thất thường, không muốn nuôi máy chủ</td><td>Lambda (kích hoạt bởi S3 Event, API Gateway…)</td></tr>
+<tr><td>CSDL quan hệ có sao lưu &amp; failover tự động</td><td>RDS Multi-AZ (<b>Read Replica</b> mới là để chia tải ĐỌC)</td></tr>
+<tr><td>Độ trễ dưới mili giây, truy cập theo khóa, quy mô lớn</td><td>DynamoDB</td></tr>
+<tr><td>Phân tích hàng TB dữ liệu lịch sử bằng SQL</td><td>Redshift (hoặc Athena nếu dữ liệu đã ở S3)</td></tr>
+<tr><td>Giảm tải truy vấn lặp lại bằng cache RAM</td><td>ElastiCache (Redis / Memcached)</td></tr>
+<tr><td>Hai microservice giao tiếp không đồng bộ, không mất tin</td><td>SQS (SNS là pub/sub phát tán cho nhiều bên)</td></tr>
+<tr><td>EC2 cần quyền truy cập S3 an toàn</td><td>IAM Role gán cho instance (KHÔNG nhúng access key)</td></tr>
+<tr><td>Ai gọi API nào / hệ thống chạy ra sao / cấu hình đổi gì</td><td>CloudTrail / CloudWatch / Config</td></tr>
+<tr><td>Cảnh báo CPU cao rồi gửi email</td><td>CloudWatch Alarm + SNS</td></tr>
+<tr><td>Đặt ngưỡng và cảnh báo chi tiêu</td><td>Budgets (Pricing Calculator ước tính trước, Cost Explorer phân tích sau)</td></tr>
+<tr><td>Máy trong private subnet cần tải bản vá từ Internet</td><td>NAT Gateway đặt ở public subnet</td></tr>
+<tr><td>Lưu trữ tuân thủ 7 năm, hầu như không truy cập</td><td>S3 Glacier Deep Archive (+ Lifecycle tự chuyển lớp)</td></tr>
 </table></div>
 <h3>Mô hình trách nhiệm chia sẻ</h3>
 <ul><li><b>AWS</b>: bảo mật CỦA đám mây – phần cứng, trung tâm dữ liệu, mạng toàn cầu, lớp ảo hóa, dịch vụ managed.</li>
@@ -189,6 +278,21 @@ net: `
   <li>WAN: chuyển mạch kênh (PSTN) vs gói (datagram / mạch ảo). X.25 kiểm lỗi mọi nút; Frame Relay chỉ ở 2 đầu; ATM cell 53 byte (5+48). ISDN BRI 2B+D (64/16 kbps), PRI 23B+D / 30B+D.</li>
   <li>Internet: ARPANET 1969 (4 nút), WWW 1989 (CERN). FTP 2 kết nối (21 điều khiển, 20 dữ liệu). H.323: gatekeeper = "bộ não". DNS: local, root, authoritative.</li>
   <li>Định tuyến: RIP (vector khoảng cách, ≤ 15 hop), OSPF (link-state, Dijkstra), IGRP (Cisco), BGP (giữa các AS).</li>
+</ul>
+<h3>Thiết bị, NAT, Firewall &amp; định tuyến</h3>
+<ul>
+  <li><b>Hub</b> (tầng 1, phát ra mọi cổng, cả mạng là một miền đụng độ) · <b>Switch</b> (tầng 2, học MAC nguồn, chuyển đúng cổng, mỗi cổng một miền đụng độ) · <b>Router</b> (tầng 3, chọn đường theo IP, tách miền quảng bá).</li>
+  <li><b>NAT</b> đổi IP riêng ↔ IP công cộng. <b>PAT / NAT overload</b>: nhiều máy dùng chung một IP công cộng, phân biệt bằng số hiệu cổng. Nhược điểm: phá vỡ kết nối đầu cuối – đầu cuối, cần port forwarding cho P2P/VoIP.</li>
+  <li>Bảng định tuyến: mạng đích + mask + next hop/cổng ra + metric; chọn theo <b>khớp tiền tố dài nhất</b>. Tuyến mặc định <code>0.0.0.0/0</code> dùng khi không khớp mục nào. Tĩnh (thủ công, ổn định) ≠ động (RIP ≤ 15 hop, OSPF link-state/Dijkstra, BGP giữa các AS).</li>
+  <li><b>Firewall</b> lọc theo IP/cổng/giao thức: <i>stateless</i> xét từng gói độc lập (phải mở luật cả hai chiều) ≠ <i>stateful</i> theo dõi phiên, tự cho phép gói phản hồi. <b>DMZ</b> đặt máy chủ công khai tách khỏi mạng nội bộ. <b>VPN</b> tạo đường hầm mã hóa qua mạng công cộng (IPsec transport/tunnel, SSL/TLS).</li>
+</ul>
+<h3>Giao thức ứng dụng</h3>
+<ul>
+  <li>HTTP: <code>GET</code> lấy · <code>POST</code> tạo mới · <code>PUT</code> thay thế · <code>PATCH</code> sửa một phần · <code>DELETE</code> xóa · <code>HEAD</code> chỉ header. Mã trạng thái: 2xx thành công (200) · 3xx chuyển hướng (301, 302) · 4xx lỗi phía client (400, 401, 403, 404) · 5xx lỗi phía server (500, 502, 503).</li>
+  <li>HTTPS = HTTP + SSL/TLS, cổng 443 (HTTP cổng 80); chứng chỉ do CA cấp giúp chống tấn công người đứng giữa. SSH (22) mã hóa toàn phiên – thay thế Telnet (23) truyền dạng rõ.</li>
+  <li>DHCP bốn bước <b>DORA</b>: Discover → Offer → Request → Acknowledge (cổng 67 server / 68 client), có thời hạn thuê.</li>
+  <li>TCP: thiết lập bắt tay 3 bước (SYN → SYN-ACK → ACK), kết thúc 4 bước (FIN → ACK → FIN → ACK vì song công). UDP không liên kết – hợp với VoIP, streaming, game, DNS.</li>
+  <li>Socket = IP + cổng (+ giao thức); một kết nối TCP xác định bởi bộ bốn IP/cổng nguồn – IP/cổng đích. Dải cổng: 0–1023 well-known · 1024–49151 đăng ký · 49152–65535 động.</li>
 </ul>
 <h3>An ninh mạng &amp; IoT</h3>
 <ul>

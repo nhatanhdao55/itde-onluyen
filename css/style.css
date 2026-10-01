@@ -114,6 +114,8 @@ h3 { font-size: 1.05rem; margin: 16px 0 8px; }
   padding: 5px 12px; cursor: pointer; font-size: 13.5px; font-family: inherit;
 }
 .chip.on { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); font-weight: 600; }
+a.chip { display: inline-block; text-decoration: none; }
+a.chip:hover { border-color: var(--primary); color: var(--primary); }
 
 label.field { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; color: var(--muted); }
 select, input[type=number] {
